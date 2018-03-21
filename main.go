@@ -30,7 +30,7 @@ func main() {
 
 	updates, err := bot.GetUpdatesChan(u)
 
-	boot := tgbotapi.NewMessage(myID, "@"+bot.Self.UserName+" is now up! 👌") // Bootup message
+	boot := tgbotapi.NewMessage(myID, "@"+bot.Self.UserName+" is now up! 👌")
 	bot.Send(boot)
 
 	for update := range updates {
@@ -41,7 +41,9 @@ func main() {
 			if update.Message.IsCommand() {
 				msg := tgbotapi.NewMessage(myID, "")
 				switch update.Message.Command() {
-				case "temp": // CPU temperature
+				case "start":
+					msg.Text = "Hi Emanuele 👋"
+				case "temp":
 					cmd := exec.Command("cat", "/sys/class/thermal/thermal_zone0/temp")
 					stdoutStderr, err := cmd.CombinedOutput()
 					if err != nil {
@@ -59,7 +61,7 @@ func main() {
 						temp = temp / 1000
 						msg.Text = "Temperature is: " + fmt.Sprint(temp) + "°C 🔥"
 					}
-				case "reboot": // reboot your raspberry
+				case "reboot":
 					cmd := exec.Command("reboot")
 					msg.Text = "Rebooting RPi! 🔄"
 					bot.Send(msg)
@@ -77,7 +79,7 @@ func main() {
 					if err != nil {
 						msg.Text = "Errore parse"
 					} else {
-						msg.Text = "Available space: " + fmt.Sprint(value/1000000) + "GB"
+						msg.Text = "Available space 💾: " + fmt.Sprint(value/1000000) + "GB"
 					}
 				case "speedtest":
 					cmd := exec.Command("speedtest-cli")
@@ -99,8 +101,7 @@ func main() {
 							up = msgSplit[i]
 						}
 					}
-					msg.Text = down + "\n" + up
-
+					msg.Text = "⬆️ " + down + "\n" + "⬇️ " + up
 				default:
 					msg.Text = "I don't know that command"
 				}
