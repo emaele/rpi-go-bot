@@ -30,7 +30,7 @@ func main() {
 
 	updates, err := bot.GetUpdatesChan(u)
 
-	boot := tgbotapi.NewMessage(myID, bot.Self.UserName+" is now up! 👌")
+	boot := tgbotapi.NewMessage(myID, "@"+bot.Self.UserName+" is now up! 👌") // Bootup message
 	bot.Send(boot)
 
 	for update := range updates {
@@ -41,7 +41,7 @@ func main() {
 			if update.Message.IsCommand() {
 				msg := tgbotapi.NewMessage(myID, "")
 				switch update.Message.Command() {
-				case "temp":
+				case "temp": // CPU temperature
 					cmd := exec.Command("cat", "/sys/class/thermal/thermal_zone0/temp")
 					stdoutStderr, err := cmd.CombinedOutput()
 					if err != nil {
@@ -59,11 +59,26 @@ func main() {
 						temp = temp / 1000
 						msg.Text = "Temperature is: " + fmt.Sprint(temp) + "°C 🔥"
 					}
-				case "reboot":
+				case "reboot": // reboot your raspberry
 					cmd := exec.Command("reboot")
 					msg.Text = "Rebooting RPi! 🔄"
 					bot.Send(msg)
 					cmd.Run()
+				case "available_space":
+					cmd := exec.Command("df", "--output=avail", "/")
+					stdoutStderr, err := cmd.CombinedOutput()
+					if err != nil {
+						msg.Text = "Errore comando"
+						bot.Send(msg)
+					}
+					tmp := string(stdoutStderr)
+					msgSplit := strings.Split(tmp, "\n")
+					value, err := strconv.Atoi(msgSplit[1])
+					if err != nil {
+						msg.Text = "Errore parse"
+					} else {
+						msg.Text = "Available space: " + fmt.Sprint(value/1000000) + "GB"
+					}
 				default:
 					msg.Text = "I don't know that command"
 				}
