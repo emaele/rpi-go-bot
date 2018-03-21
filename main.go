@@ -79,6 +79,28 @@ func main() {
 					} else {
 						msg.Text = "Available space: " + fmt.Sprint(value/1000000) + "GB"
 					}
+				case "speedtest":
+					cmd := exec.Command("speedtest-cli")
+					stdoutStderr, err := cmd.CombinedOutput()
+					if err != nil {
+						msg.Text = "Errore comando"
+						bot.Send(msg)
+					}
+					tmp := string(stdoutStderr)
+					msgSplit := strings.Split(tmp, "\n")
+
+					var down, up string
+
+					for i := 0; i < len(msgSplit); i++ {
+						if strings.HasPrefix(msgSplit[i], "Download:") {
+							down = msgSplit[i]
+						}
+						if strings.HasPrefix(msgSplit[i], "Upload:") {
+							up = msgSplit[i]
+						}
+					}
+					msg.Text = down + "\n" + up
+
 				default:
 					msg.Text = "I don't know that command"
 				}
