@@ -101,7 +101,7 @@ func main() {
 							up = msgSplit[i]
 						}
 					}
-					msg.Text = "⬆️ " + down + "\n" + "⬇️ " + up
+					msg.Text = "⬇️ " + down + "\n" + "⬆️ " + up
 				default:
 					msg.Text = "I don't know that command"
 				}

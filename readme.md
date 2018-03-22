@@ -7,5 +7,5 @@
 - ```/temp``` Get current CPU's temperature
 - ```/reboot``` Reboot your Raspberry
 - ```/available_space``` Get the amount of free GBs on your sd
-- ```speedtest``` Get the result of a speedtest (it requires ```speedtest-cli```)
+- ```/speedtest``` Get the result of a speedtest (it requires ```speedtest-cli```)
 
