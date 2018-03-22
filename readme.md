@@ -5,11 +5,12 @@
 
 <h3>Available commands</h3>
 
+- You get notified on every startup
 - ```/temp``` Get current CPU temperature
 - ```/reboot``` Reboot your Raspberry
 - ```/available_space``` Get the amount of free GBs on your sd
 - ```/speedtest``` Get the result of a speedtest (it requires ```speedtest-cli```, you can install it with apt)
-
+- Check constantly for CPU temp and get notified if it reaches a custom value
 <h3>Config</h3>
 
 Before building it you need to setup your id and token bot. You can get the first one by sending a message to ```@RawDataBot```[^1]
