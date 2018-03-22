@@ -66,8 +66,8 @@ func main() {
 				case "available_space":
 					cmd := exec.Command("df", "--output=avail", "/")
 					if output, err := getOut(cmd); err == nil {
-						msgSplit := strings.Split(output, "\n")
-						if value, err := strconv.Atoi(msgSplit[1]); err == nil {
+						log := strings.Split(output, "\n")
+						if value, err := strconv.Atoi(log[1]); err == nil {
 							msg.Text = "Available space: " + fmt.Sprint(value/1000000) + "GB 💾"
 						} else {
 							msg.Text = "Error"
@@ -78,16 +78,15 @@ func main() {
 				case "speedtest":
 					cmd := exec.Command("speedtest-cli")
 					if output, err := getOut(cmd); err == nil {
-						msgSplit := strings.Split(output, "\n")
+						log := strings.Split(output, "\n")
 
 						var down, up string
 
-						for i := 0; i < len(msgSplit); i++ {
-							if strings.HasPrefix(msgSplit[i], "Download:") {
-								down = msgSplit[i]
-							}
-							if strings.HasPrefix(msgSplit[i], "Upload:") {
-								up = msgSplit[i]
+						for _, element := range log {
+							if strings.HasPrefix(element, "Download:") {
+								down = element
+							} else if strings.HasPrefix(element, "Upload:") {
+								up = element
 							}
 						}
 						msg.Text = "⬇️ " + down + "\n" + "⬆️ " + up
