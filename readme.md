@@ -5,7 +5,7 @@
 
 <h3>Available commands</h3>
 
-- You get notified on every startup
+- Get notified on every startup
 - ```/temp``` Get current CPU temperature
 - ```/reboot``` Reboot your Raspberry
 - ```/available_space``` Get the amount of free GBs on your sd
@@ -30,7 +30,8 @@ TokenBot can be obtained by creating a new bot with ```@BotFather```[^2]
 Change the value of tempLimit to set your temperature alert
 
 ```go
-tempLimit float64 = 50                // temperature limit
+	tempLimit float64 = 50                // temperature limit
+)
 ```
 
 [^1]: https://t.me/RawDataBot
