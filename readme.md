@@ -26,5 +26,5 @@ TokenBot can be obtained by creating a new bot with ```@BotFather```[^2]
 - ```/available_space``` Get the amount of free GBs on your sd
 - ```/speedtest``` Get the result of a speedtest (it requires ```speedtest-cli```)
 
-[^1]: https://t.me/@RawDataBot
-[^2]: https://t.me/@BotFather
+[^1]: https://t.me/RawDataBot
+[^2]: https://t.me/BotFather
