@@ -4,7 +4,7 @@
 
 <h3>Config</h3>
 
-Before building it you need to setup your id and token bot. You can get the first one my sending a message to ```@RawDataBot```[^1]
+Before building it you need to setup your id and token bot. You can get the first one by sending a message to ```@RawDataBot```[^1]
 
 ![alt text](img/raw.png)
 
