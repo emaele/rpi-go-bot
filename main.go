@@ -44,12 +44,12 @@ func main() {
 				msg := tgbotapi.NewMessage(myID, "")
 				switch update.Message.Command() {
 				case "start":
-					msg.Text = "Hi Emanuele 👋"
+					msg.Text = "Hi " + update.Message.From.FirstName + " 👋"
 				case "temp":
 					cmd := exec.Command("cat", "/sys/class/thermal/thermal_zone0/temp")
 					if output, err := getOut(cmd); err == nil {
 						log := strings.Split(output, "\n")
-						if temp, err := strconv.ParseFloat(log[0], 32); err == nil {
+						if temp, err := strconv.ParseFloat(log[0], 64); err == nil {
 							temp = temp / 1000
 							msg.Text = "Temperature is: " + fmt.Sprint(temp) + "°C 🔥"
 						} else {
