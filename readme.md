@@ -6,7 +6,7 @@
 
 Before building it you need to setup your id and token bot. You can get the first one my sending a message to ```@RawDataBot```[^1]
 
-![alt text](img/raw.png =640x480)
+![alt text](img/raw.png)
 
 ```go
 var (
