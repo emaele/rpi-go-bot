@@ -125,20 +125,24 @@ func getOut(command *exec.Cmd) (output string, fail error) {
 func tempAlert(limit float64, bot *tgbotapi.BotAPI) {
 
 	for {
+		msg := tgbotapi.NewMessage(myID, "")
 		cmd := exec.Command("cat", "/sys/class/thermal/thermal_zone0/temp")
 		stdoutStderr, err := cmd.CombinedOutput()
 		if err != nil {
-			println("Errore comando")
+			println("Command error")
 		}
 		tmp := string(stdoutStderr)
 		log := strings.Split(tmp, "\n")
-		temptmp, err := strconv.ParseFloat(log[0], 64)
+		if temptmp, err := strconv.ParseFloat(log[0], 64); err == nil {
 
-		temp := temptmp / 1000
+			temp := temptmp / 1000
 
-		if temp >= limit {
-			msg := tgbotapi.NewMessage(myID, "")
-			msg.Text = "\t⚠️Attention please⚠️ \n🔥 Your RPi temperature is over " + fmt.Sprint(limit) + "°C 🔥"
+			if temp >= limit {
+				msg.Text = "\t⚠️Attention please⚠️ \n🔥 Your RPi temperature is over " + fmt.Sprint(limit) + "°C 🔥"
+				bot.Send(msg)
+			}
+		} else {
+			msg.Text = "Parse error"
 			bot.Send(msg)
 		}
 
