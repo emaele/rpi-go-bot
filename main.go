@@ -10,15 +10,24 @@ import (
 	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/shuienko/go-pihole"
 )
 
 var (
-	myID      int64   = 000000            // you should replace this with your id
-	tokenBot          = "Your token here" // get your token bot from BotFather
-	tempLimit float64 = 50                // temperature limit
+	myID       int64   = 000000            // you should replace this with your id
+	tokenBot           = "Your token here" // get your token bot from BotFather
+	tempLimit  float64 = 50                // temperature limit
+	piholeHost         = "IP of the device where piHole is running"
+	apiToken           = "PiHole Api Token" // get yours from pihole settings
 )
 
 func main() {
+
+	// Create connector object
+	ph := gohole.PiHConnector{
+		Host:  piholeHost,
+		Token: apiToken,
+	}
 
 	bot, err := tgbotapi.NewBotAPI(tokenBot)
 	if err != nil {
@@ -39,11 +48,11 @@ func main() {
 	go tempAlert(tempLimit, bot)
 
 	for update := range updates {
-		go mainBot(bot, update)
+		go mainBot(bot, update, ph)
 	}
 }
 
-func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
+func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnector) {
 
 	if update.Message.Chat.ID == myID {
 		if update.Message.IsCommand() {
@@ -99,6 +108,13 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 				} else {
 					msg.Text = "Error"
 				}
+			case "piholestatus":
+				summary := ph.Summary()
+				if summary.Status == "enabled" {
+					msg.Text = "Pihole is: enabled ✅"
+				} else {
+					msg.Text = "Pihole is: disabled 🛑"
+				}
 			default:
 				msg.Text = "I don't know that command"
 			}
@@ -110,6 +126,8 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 		bot.Send(msg)
 	}
 }
+
+// func piholeSet()
 
 func getOut(command *exec.Cmd) (output string, fail error) {
 	stdoutStderr, err := command.CombinedOutput()
