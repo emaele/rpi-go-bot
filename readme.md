@@ -15,7 +15,11 @@
 
 <h3>Config</h3>
 
-Before building it you need to setup your id and token bot. You can get the first one by sending a message to ```@RawDataBot```[^1]
+First of all you need to install Telegram Go Apis
+
+```go get github.com/go-telegram-bot-api/telegram-bot-api```
+
+Before building it you need to setup your id,token bot and temperature limit. You can get the first one by sending a message to ```@RawDataBot```[^1]
 
 ![alt text](img/raw.png)
 
