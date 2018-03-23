@@ -1,5 +1,5 @@
 <h1>Raspberry Pi Go Bot</h1>
-![alt text1](https://goreportcard.com/badge/gitlab.com/emaele/rpi-go-bot)
+![goreportcard](https://goreportcard.com/badge/gitlab.com/emaele/rpi-go-bot)
 
 <p>RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature</p>
 <p>It also checks every X second if CPU temperature goes over the limit of Y°C</p>
@@ -21,7 +21,7 @@ First of all you need to install Telegram Go Apis
 
 Before building it you need to setup your id, token bot and temperature limit. You can get the first one by sending a message to ```@RawDataBot```[^1]
 
-![alt text](img/raw.png)
+![rawdatabot](img/raw.png)
 
 ```go
 var (
@@ -35,7 +35,7 @@ TokenBot can be obtained by creating a new bot with ```@BotFather```[^2]
 Change the value of tempLimit to set your temperature alert
 
 ```go
-	tempLimit float64 = 50                // temperature limit
+	tempLimit float64 = 50
 )
 ```
 
