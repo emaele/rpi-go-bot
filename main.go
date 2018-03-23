@@ -23,7 +23,6 @@ var (
 
 func main() {
 
-	// Create connector object
 	ph := gohole.PiHConnector{
 		Host:  piholeHost,
 		Token: apiToken,
@@ -126,8 +125,6 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 		bot.Send(msg)
 	}
 }
-
-// func piholeSet()
 
 func getOut(command *exec.Cmd) (output string, fail error) {
 	stdoutStderr, err := command.CombinedOutput()
