@@ -1,4 +1,5 @@
 <h1>Raspberry Pi Go Bot</h1>
+![alt text1](https://goreportcard.com/badge/gitlab.com/emaele/rpi-go-bot)
 
 <p>RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature</p>
 <p>It also checks every X second if CPU temperature goes over the limit of Y°C</p>
