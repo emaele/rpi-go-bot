@@ -32,6 +32,9 @@ func main() {
 	u.Timeout = 60
 
 	updates, err := bot.GetUpdatesChan(u)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	boot := tgbotapi.NewMessage(myID, "@"+bot.Self.UserName+" is now up! 👌")
 	bot.Send(boot)
