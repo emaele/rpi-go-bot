@@ -3,6 +3,7 @@
 
 <p>RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature</p>
 <p>It also checks every X second if CPU temperature goes over the limit of Y°C</p>
+<p>Remeber to run it as root or cpu temp will not get the value</p>
 
 <h3>Available commands</h3>
 
