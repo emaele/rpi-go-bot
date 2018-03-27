@@ -47,7 +47,7 @@ func main() {
 	go tempAlert(tempLimit, bot)
 
 	for update := range updates {
-		if update.EditedMessage == nil {
+		if update.Message != nil {
 			go mainBot(bot, update, ph)
 		}
 	}
