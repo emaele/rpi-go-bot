@@ -1,9 +1,9 @@
 <h1>Raspberry Pi Go Bot</h1>
-![goreportcard](https://goreportcard.com/badge/gitlab.com/emaele/rpi-go-bot)
+![alt text1](https://goreportcard.com/badge/gitlab.com/emaele/rpi-go-bot)
 
 <p>RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature</p>
 <p>It also checks every X second if CPU temperature goes over the limit of Y°C</p>
-<p>Remeber to run it as root or cpu temp will not get the value</p>
+<p>Be sure to run it as root</p>
 
 <h3>Available commands</h3>
 
@@ -12,17 +12,16 @@
 - ```/reboot``` Reboot your Raspberry
 - ```/available_space``` Get the amount of free GBs on your sd
 - ```/speedtest``` Get the result of a speedtest (it requires ```speedtest-cli```, you can install it with apt)
+- ```/pihole``` status/enable/disable
+	- ```status``` get current status of pihole
+	. ```enable/disable``` enable or disable pihole
 - Check constantly for CPU temp and get notified if it reaches a custom value
 
 <h3>Config</h3>
 
-First of all you need to install Telegram Go Apis
+Before building it you need to setup your id and token bot. You can get the first one by sending a message to ```@RawDataBot```[^1]
 
-```go get github.com/go-telegram-bot-api/telegram-bot-api```
-
-Before building it you need to setup your id, token bot and temperature limit. You can get the first one by sending a message to ```@RawDataBot```[^1]
-
-![rawdatabot](img/raw.png)
+![alt text](img/raw.png)
 
 ```go
 var (
@@ -36,7 +35,13 @@ TokenBot can be obtained by creating a new bot with ```@BotFather```[^2]
 Change the value of tempLimit to set your temperature alert
 
 ```go
-	tempLimit float64 = 50
+	tempLimit float64 = 50                // temperature limit
+```
+PiHole arguments, ip and apitoken
+
+```go
+	piholeHost         = ""      // device's ip where pi-hole is running
+	apiToken           = ""      // get yours from pihole settings
 )
 ```
 
