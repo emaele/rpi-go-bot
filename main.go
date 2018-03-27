@@ -10,15 +10,23 @@ import (
 	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/shuienko/go-pihole"
 )
 
 var (
-	myID      int64   = 000000            // you should replace this with your id
-	tokenBot          = "Your token here" // get your token bot from BotFather
-	tempLimit float64 = 50                // temperature limit
+	myID       int64   = 0000000 // you should replace this with your id
+	tokenBot           = ""      // get your token bot from BotFather
+	tempLimit  float64 = 50      // temperature limit
+	piholeHost         = ""      // device's ip where pi-hole is running
+	apiToken           = ""      // get yours from pihole settings
 )
 
 func main() {
+
+	ph := gohole.PiHConnector{
+		Host:  piholeHost,
+		Token: apiToken,
+	}
 
 	bot, err := tgbotapi.NewBotAPI(tokenBot)
 	if err != nil {
@@ -42,11 +50,13 @@ func main() {
 	go tempAlert(tempLimit, bot)
 
 	for update := range updates {
-		go mainBot(bot, update)
+		if update.Message != nil {
+			go mainBot(bot, update, ph)
+		}
 	}
 }
 
-func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
+func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnector) {
 
 	if update.Message.Chat.ID == myID {
 		if update.Message.IsCommand() {
@@ -101,6 +111,26 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update) {
 					msg.Text = "⬇️ " + down + "\n" + "⬆️ " + up
 				} else {
 					msg.Text = "Error"
+				}
+			case "pihole":
+				holeSwitch := update.Message.CommandArguments()
+
+				switch holeSwitch {
+				case "status":
+					summary := ph.Summary()
+					if summary.Status == "enabled" {
+						msg.Text = "Pihole is: enabled ✅"
+					} else {
+						msg.Text = "Pihole is: disabled 🛑"
+					}
+				case "enable":
+					ph.Enable()
+					msg.Text = "Pihole is now enabled ✅"
+				case "disable":
+					ph.Disable()
+					msg.Text = "Pihole is now disabled  🛑"
+				default:
+					msg.Text = "Argument not recognized, use status/enable/disable"
 				}
 			default:
 				msg.Text = "I don't know that command"
