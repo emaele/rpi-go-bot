@@ -95,6 +95,8 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 					msg.Text = "Error"
 				}
 			case "speedtest":
+				wait := tgbotapi.NewMessage(myID, "Performing a speedtest, please wait... ⏳")
+				bot.Send(wait)
 				cmd := exec.Command("speedtest-cli")
 				if output, err := getOut(cmd); err == nil {
 					log := strings.Split(output, "\n")
@@ -142,6 +144,7 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 		msg.Text = "You are not authorized to use this bot ⚠️"
 		bot.Send(msg)
 	}
+
 }
 
 func getOut(command *exec.Cmd) (output string, fail error) {
