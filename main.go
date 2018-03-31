@@ -65,15 +65,11 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 			case "start":
 				msg.Text = "Hi " + update.Message.From.FirstName + " 👋"
 			case "temp":
-				cmd := exec.Command("cat", "/sys/class/thermal/thermal_zone0/temp")
-				if output, err := getOut(cmd); err == nil {
-					log := strings.Split(output, "\n")
-					if temp, err := strconv.ParseFloat(log[0], 64); err == nil {
-						temp = temp / 1000
-						msg.Text = "Temperature is: " + fmt.Sprint(temp) + "°C 🔥"
-					} else {
-						msg.Text = "Error"
-					}
+				cmd := exec.Command("/opt/vc/bin/vcgencmd", "measure_temp")
+				if stdoutStderr, err := cmd.CombinedOutput(); err == nil {
+					tmp := string(stdoutStderr)
+					temp := strings.Trim(tmp, "temp='C\n")
+					msg.Text = "Temperature is " + temp + "°C 🔥"
 				} else {
 					msg.Text = "Error"
 				}
@@ -87,7 +83,7 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 				if output, err := getOut(cmd); err == nil {
 					msgSplit := strings.Split(output, "\n")
 					if value, err := strconv.Atoi(msgSplit[1]); err == nil {
-						msg.Text = "Available space: " + fmt.Sprint(value/1000000) + "GB 💾"
+						msg.Text = "Available space " + fmt.Sprint(value/1000000) + "GB 💾"
 					} else {
 						msg.Text = "Error"
 					}
@@ -121,9 +117,9 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 				case "status":
 					summary := ph.Summary()
 					if summary.Status == "enabled" {
-						msg.Text = "Pihole is: enabled ✅"
+						msg.Text = "Pihole is enabled ✅"
 					} else {
-						msg.Text = "Pihole is: disabled 🛑"
+						msg.Text = "Pihole is disabled 🛑"
 					}
 				case "enable":
 					ph.Enable()
@@ -162,26 +158,21 @@ func tempAlert(limit float64, bot *tgbotapi.BotAPI) {
 
 	for {
 		msg := tgbotapi.NewMessage(myID, "")
-		cmd := exec.Command("cat", "/sys/class/thermal/thermal_zone0/temp")
-		stdoutStderr, err := cmd.CombinedOutput()
-		if err != nil {
-			println("Command error")
-		}
-		tmp := string(stdoutStderr)
-		log := strings.Split(tmp, "\n")
-		if temptmp, err := strconv.ParseFloat(log[0], 64); err == nil {
-
-			temp := temptmp / 1000
-
-			if temp >= limit {
-				msg.Text = "\t⚠️Attention please⚠️ \n🔥 Your RPi temperature is over " + fmt.Sprint(limit) + "°C 🔥"
-				bot.Send(msg)
+		cmd := exec.Command("/opt/vc/bin/vcgencmd", "measure_temp")
+		if stdoutStderr, err := cmd.CombinedOutput(); err == nil {
+			tmp := string(stdoutStderr)
+			tmptemp := strings.Trim(tmp, "temp='C\n")
+			if temp, err := strconv.ParseFloat(tmptemp, 64); err == nil {
+				if temp >= limit {
+					msg.Text = "\t⚠️Attention please⚠️ \n🔥 Your RPi temperature is over " + fmt.Sprint(limit) + "°C 🔥"
+					bot.Send(msg)
+				}
 			}
 		} else {
 			msg.Text = "Parse error"
 			bot.Send(msg)
 		}
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 }
