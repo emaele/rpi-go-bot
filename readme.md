@@ -1,11 +1,10 @@
-<h1>Raspberry Pi Go Bot</h1>
-![alt text1](https://goreportcard.com/badge/gitlab.com/emaele/rpi-go-bot)
+# Raspberry Pi Go Bot
 
 <p>RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature</p>
-<p>It also checks every X second if CPU temperature goes over the limit of Y°C</p>
+<p>It also checks every 10 second if CPU temperature goes over the limit of 60°C (you can edit this value in the config file)</p>
 <p>Be sure to run it as root</p>
 
-<h3>Available commands</h3>
+### Available commands and features
 
 - Get notified on every startup
 - ```/temp``` Get current CPU temperature
@@ -17,33 +16,24 @@
 	. ```enable/disable``` enable or disable pihole
 - Check constantly for CPU temp and get notified if it reaches a custom value
 
-<h3>Config</h3>
+### Config
 
-Before building it you need to setup your id and token bot. You can get the first one by sending a message to ```@RawDataBot```[^1]
-
-![alt text](img/raw.png)
-
-```go
-var (
-	myID     int64 = 000000           
+Before building it you need to install go dependencies, run this in a shell:
 ```
-TokenBot can be obtained by creating a new bot with ```@BotFather```[^2]
-
-```go
-	tokenBot       = "Your token here" 
-```
-Change the value of tempLimit to set your temperature alert
-
-```go
-	tempLimit float64 = 50                // temperature limit
-```
-PiHole arguments, ip and apitoken
-
-```go
-	piholeHost         = ""      // device's ip where pi-hole is running
-	apiToken           = ""      // get yours from pihole settings
-)
+go get github.com/shuienko/go-pihole
+go get github.com/BurntSushi/toml
 ```
 
-[^1]: https://t.me/RawDataBot
-[^2]: https://t.me/BotFather
+Now you need to create and edit the config file, you can also rename config_example.toml to config.toml to do that.
+
+Telegram Bot Token can be obatined by creating a bot with ```@botfather```[^1] and your id by sending a message to ```@rawdatabot```[^2]
+
+After you done everything you're ready to build and execute the bot. Type
+```
+go build
+sudo ./rpi-go-bot
+```
+
+[^1]: https://t.me/BotFather
+[^2]: https://t.me/RawDataBot
+
