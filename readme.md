@@ -1,9 +1,8 @@
 # Raspberry Pi Go Bot
 
-<p>RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature</p>
-<p>It also checks every 10 second if CPU temperature goes over the limit of 60°C (you can edit this value in the config file)</p>
-<p>Be sure to run it as root</p>
-
+RPi bot is a simple bot written in Go to control some aspects of your Raspberry Pi, like cpu temperature.
+It also checks every 10 second if CPU temperature goes over the limit of 60°C (you can edit this value in the config file).
+Be sure to run it as root.
 ### Available commands and features
 
 - Get notified on every startup
@@ -33,7 +32,7 @@ Now you need to create and edit the config file, you can also rename config_exam
 
 Telegram Bot Token can be obatined by creating a bot with ```@botfather```[^1] and your id by sending a message to ```@rawdatabot```[^2]
 
-After you done everything you're ready to build and execute the bot. Type
+After you done everything you're ready to build and execute the bot. Type:
 ```
 go build
 sudo ./rpi-go-bot
