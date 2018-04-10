@@ -24,6 +24,11 @@ go get github.com/shuienko/go-pihole
 go get github.com/BurntSushi/toml
 ```
 
+You also have to install speedtest-cli with python-pip
+```
+pip install speedtest-cli
+```
+
 Now you need to create and edit the config file, you can also rename config_example.toml to config.toml to do that.
 
 Telegram Bot Token can be obatined by creating a bot with ```@botfather```[^1] and your id by sending a message to ```@rawdatabot```[^2]
