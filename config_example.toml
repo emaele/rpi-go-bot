@@ -1,0 +1,14 @@
+# Telegram bot token
+TelegramTokenBot = ""
+
+# Your Telegram ID
+MyID = 0
+
+# Temperature Limit 
+TempLimit = 60.0
+
+# Pihole's device IP
+PiholeHost = "127.0.0.1"
+
+# Pihole API token
+PiholeAPIToken = ""
