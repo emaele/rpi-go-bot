@@ -6,6 +6,8 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+// Config is the bot configuration representation, read
+// from a configuration file.
 type Config struct {
 	TelegramTokenBot string
 	MyID             int64
@@ -13,7 +15,7 @@ type Config struct {
 	PiholeHost       string
 	PiholeAPIToken   string
 }
-
+// ReadConfig loads the values from the config file
 func ReadConfig(path string) (Config, error) {
 	var conf Config
 
