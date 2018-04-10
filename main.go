@@ -16,13 +16,13 @@ import (
 
 var (
 	config         conf.Config
-	configFilePath string
+	configFilePath = "config.toml"
 	err            error
 )
 
 func main() {
 
-	config, err = conf.ReadConfig("config.toml")
+	config, err = conf.ReadConfig(configFilePath)
 	if err != nil {
 		log.Panic(err)
 	}
