@@ -15,6 +15,7 @@ type Config struct {
 	PiholeHost       string
 	PiholeAPIToken   string
 }
+
 // ReadConfig loads the values from the config file
 func ReadConfig(path string) (Config, error) {
 	var conf Config

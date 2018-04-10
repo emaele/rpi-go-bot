@@ -10,13 +10,13 @@ import (
 	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
-	conf "gitlab.com/emaele/rpi-go-bot/config"
 	"github.com/shuienko/go-pihole"
+	conf "gitlab.com/emaele/rpi-go-bot/config"
 )
 
 var (
-	config         conf.Config
-	err            error
+	config conf.Config
+	err    error
 )
 
 func main() {
