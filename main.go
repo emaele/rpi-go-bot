@@ -10,25 +10,29 @@ import (
 	"time"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
+	conf "gitlab.com/emaele/rpi-go-bot/config"
 	"github.com/shuienko/go-pihole"
 )
 
 var (
-	myID       int64   = 0000000 // you should replace this with your id
-	tokenBot           = ""      // get your token bot from BotFather
-	tempLimit  float64 = 50      // temperature limit
-	piholeHost         = ""      // device's ip where pi-hole is running
-	apiToken           = ""      // get yours from pihole settings
+	config         conf.Config
+	configFilePath string
+	err            error
 )
 
 func main() {
 
-	ph := gohole.PiHConnector{
-		Host:  piholeHost,
-		Token: apiToken,
+	config, err = conf.ReadConfig("config.toml")
+	if err != nil {
+		log.Panic(err)
 	}
 
-	bot, err := tgbotapi.NewBotAPI(tokenBot)
+	ph := gohole.PiHConnector{
+		Host:  config.PiholeHost,
+		Token: config.PiholeAPIToken,
+	}
+
+	bot, err := tgbotapi.NewBotAPI(config.TelegramTokenBot)
 	if err != nil {
 		log.Panic(err)
 	}
@@ -44,10 +48,10 @@ func main() {
 		log.Panic(err)
 	}
 
-	boot := tgbotapi.NewMessage(myID, "@"+bot.Self.UserName+" is now up! 👌")
+	boot := tgbotapi.NewMessage(config.MyID, "@"+bot.Self.UserName+" is now up! 👌")
 	bot.Send(boot)
 
-	go tempAlert(tempLimit, bot)
+	go tempAlert(config.TempLimit, bot)
 
 	for update := range updates {
 		if update.Message != nil {
@@ -58,9 +62,9 @@ func main() {
 
 func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnector) {
 
-	if update.Message.Chat.ID == myID {
+	if update.Message.Chat.ID == config.MyID {
 		if update.Message.IsCommand() {
-			msg := tgbotapi.NewMessage(myID, "")
+			msg := tgbotapi.NewMessage(config.MyID, "")
 			switch update.Message.Command() {
 			case "start":
 				msg.Text = "Hi " + update.Message.From.FirstName + " 👋"
@@ -91,7 +95,7 @@ func mainBot(bot *tgbotapi.BotAPI, update tgbotapi.Update, ph gohole.PiHConnecto
 					msg.Text = "Error"
 				}
 			case "speedtest":
-				wait := tgbotapi.NewMessage(myID, "Performing a speedtest, please wait... ⏳")
+				wait := tgbotapi.NewMessage(config.MyID, "Performing a speedtest, please wait... ⏳")
 				bot.Send(wait)
 				cmd := exec.Command("speedtest-cli")
 				if output, err := getOut(cmd); err == nil {
@@ -157,7 +161,7 @@ func getOut(command *exec.Cmd) (output string, fail error) {
 func tempAlert(limit float64, bot *tgbotapi.BotAPI) {
 
 	for {
-		msg := tgbotapi.NewMessage(myID, "")
+		msg := tgbotapi.NewMessage(config.MyID, "")
 		cmd := exec.Command("/opt/vc/bin/vcgencmd", "measure_temp")
 		if stdoutStderr, err := cmd.CombinedOutput(); err == nil {
 			tmp := string(stdoutStderr)
