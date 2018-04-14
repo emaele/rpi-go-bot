@@ -6,14 +6,14 @@ Be sure to run it as root.
 ### Available commands and features
 
 - Get notified on every startup
+- Check constantly for CPU temp and get notified if it reaches a custom value
 - ```/temp``` Get current CPU temperature
 - ```/reboot``` Reboot your Raspberry
 - ```/available_space``` Get the amount of free GBs on your sd
 - ```/speedtest``` Get the result of a speedtest (it requires ```speedtest-cli```, you can install it with apt)
 - ```/pihole``` status/enable/disable
 	- ```status``` get current status of pihole
-	. ```enable/disable``` enable or disable pihole
-- Check constantly for CPU temp and get notified if it reaches a custom value
+	- ```enable/disable``` enable or disable pihole
 
 ### Config
 
@@ -23,14 +23,14 @@ go get github.com/shuienko/go-pihole
 go get github.com/BurntSushi/toml
 ```
 
-You also have to install speedtest-cli with python-pip
+You also have to install speedtest-cli with python-pip.
 ```
 pip install speedtest-cli
 ```
 
 Now you need to create and edit the config file, you can also rename config_example.toml to config.toml to do that.
 
-Telegram Bot Token can be obatined by creating a bot with ```@botfather```[^1] and your id by sending a message to ```@rawdatabot```[^2]
+Telegram Bot Token can be obatined by creating a bot with ```@botfather```[^1] and your id by sending a message to ```@rawdatabot```[^2].
 
 After you done everything you're ready to build and execute the bot. Type:
 ```
