@@ -17,13 +17,8 @@ Be sure to run it as root.
 
 ### Config
 
-Before building it you need to install go dependencies, run this in a shell:
-```
-go get github.com/shuienko/go-pihole
-go get github.com/BurntSushi/toml
-```
+Before building it you need to install dependencies
 
-You also have to install speedtest-cli with python-pip.
 ```
 pip install speedtest-cli
 ```
