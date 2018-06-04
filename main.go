@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
@@ -14,9 +15,12 @@ import (
 var (
 	config conf.Config
 	err    error
+	debug  bool
 )
 
 func main() {
+
+	setCLIParams()
 
 	config, err = conf.ReadConfig("config.toml")
 	if err != nil {
@@ -33,7 +37,7 @@ func main() {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	bot.Debug = debug
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	u := tgbotapi.NewUpdate(0)
@@ -64,4 +68,9 @@ func mainBot(bot *tgbotapi.BotAPI, message *tgbotapi.Message, ph gohole.PiHConne
 		msg := tgbotapi.NewMessage(message.Chat.ID, "You are not authorized to use this bot ⚠️")
 		bot.Send(msg)
 	}
+}
+
+func setCLIParams() {
+	flag.BoolVar(&debug, "debug", false, "activate all the debug features")
+	flag.Parse()
 }
