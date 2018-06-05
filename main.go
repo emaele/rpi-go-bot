@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/shuienko/go-pihole"
 
 	"gitlab.com/emaele/rpi-go-bot/commands"
 	conf "gitlab.com/emaele/rpi-go-bot/config"
@@ -13,23 +12,19 @@ import (
 )
 
 var (
-	config conf.Config
-	err    error
-	debug  bool
+	config         conf.Config
+	err            error
+	debug          bool
+	configFilePath string
 )
 
 func main() {
 
 	setCLIParams()
 
-	config, err = conf.ReadConfig("config.toml")
+	config, err = conf.ReadConfig(configFilePath)
 	if err != nil {
 		log.Panic(err)
-	}
-
-	ph := gohole.PiHConnector{
-		Host:  config.PiholeHost,
-		Token: config.PiholeAPIToken,
 	}
 
 	bot, err := tgbotapi.NewBotAPI(config.TelegramTokenBot)
@@ -55,15 +50,15 @@ func main() {
 
 	for update := range updates {
 		if update.Message != nil {
-			go mainBot(bot, update.Message, ph)
+			go mainBot(bot, update.Message, config)
 		}
 	}
 }
 
-func mainBot(bot *tgbotapi.BotAPI, message *tgbotapi.Message, ph gohole.PiHConnector) {
+func mainBot(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf.Config) {
 
 	if message.Chat.ID == config.MyID {
-		commands.HandleCommands(bot, message, ph, config.MyID)
+		commands.HandleCommands(bot, message, config)
 	} else {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "You are not authorized to use this bot ⚠️")
 		bot.Send(msg)
@@ -72,5 +67,6 @@ func mainBot(bot *tgbotapi.BotAPI, message *tgbotapi.Message, ph gohole.PiHConne
 
 func setCLIParams() {
 	flag.BoolVar(&debug, "debug", false, "activate all the debug features")
+	flag.StringVar(&configFilePath, "config", "./config.toml", "configuration file path")
 	flag.Parse()
 }

@@ -7,6 +7,9 @@ MyID = 0
 # Temperature Limit 
 TempLimit = 60.0
 
+# Enable/disable Pihole integration
+Pihole = false
+
 # Pihole's device IP
 PiholeHost = "127.0.0.1"
 

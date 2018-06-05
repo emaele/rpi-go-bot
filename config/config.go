@@ -12,6 +12,7 @@ type Config struct {
 	TelegramTokenBot string
 	MyID             int64
 	TempLimit        float64
+	Pihole           bool
 	PiholeHost       string
 	PiholeAPIToken   string
 }
@@ -30,12 +31,13 @@ func ReadConfig(path string) (Config, error) {
 		return newErr("missing ID")
 	} else if conf.TempLimit == 0 {
 		return newErr("missing temperature limit value")
-	} else if conf.PiholeHost == "" {
-		return newErr("missing pihole host")
-	} else if conf.PiholeAPIToken == "" {
-		return newErr("missing pihole API token")
+	} else if conf.Pihole {
+		if conf.PiholeHost == "" {
+			return newErr("missing pihole host")
+		} else if conf.PiholeAPIToken == "" {
+			return newErr("missing pihole API token")
+		}
 	}
-
 	return conf, nil
 }
 
