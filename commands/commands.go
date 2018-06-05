@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 
+	conf "gitlab.com/emaele/rpi-go-bot/config"
+
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/shuienko/go-pihole"
 
@@ -14,15 +16,15 @@ import (
 )
 
 // HandleCommands manages te
-func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, ph gohole.PiHConnector, myID int64) {
+func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf.Config) {
 
-	msg := tgbotapi.NewMessage(myID, "")
+	msg := tgbotapi.NewMessage(config.MyID, "")
 
 	switch message.Command() {
 	case "start":
 		msg.Text = "Hi " + message.From.FirstName + " 👋"
 	case "temp":
-		msg.Text = fmt.Sprintf("Temperature is %s °C 🔥", string(utility.GetTemp()))
+		msg.Text = fmt.Sprintf("Temperature is %s °C 🔥", utility.GetTemp())
 	case "reboot":
 		cmd := exec.Command("reboot")
 		msg.Text = "Rebooting RPi! 🔄"
@@ -41,7 +43,7 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, ph gohole.P
 			msg.Text = "Error"
 		}
 	case "speedtest":
-		wait := tgbotapi.NewMessage(myID, "Performing a speedtest, please wait... ⏳")
+		wait := tgbotapi.NewMessage(config.MyID, "Performing a speedtest, please wait... ⏳")
 		bot.Send(wait)
 
 		cmd := exec.Command("speedtest-cli")
@@ -62,24 +64,33 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, ph gohole.P
 			msg.Text = "Error"
 		}
 	case "pihole":
-		holeArguments := message.CommandArguments()
 
-		switch holeArguments {
-		case "status":
-			summary := ph.Summary()
-			if summary.Status == "enabled" {
-				msg.Text = "Pihole is enabled ✅"
-			} else {
-				msg.Text = "Pihole is disabled 🛑"
+		if config.Pihole {
+			ph := gohole.PiHConnector{
+				Host:  config.PiholeHost,
+				Token: config.PiholeAPIToken,
 			}
-		case "enable":
-			ph.Enable()
-			msg.Text = "Pihole is now enabled ✅"
-		case "disable":
-			ph.Disable()
-			msg.Text = "Pihole is now disabled  🛑"
-		default:
-			msg.Text = "Argument not recognized, use status/enable/disable"
+
+			holeArguments := message.CommandArguments()
+
+			switch holeArguments {
+			case "status":
+				summary := ph.Summary()
+				msg.Text = "Pihole is disabled 🛑"
+				if summary.Status == "enabled" {
+					msg.Text = "Pihole is enabled ✅"
+				}
+			case "enable":
+				ph.Enable()
+				msg.Text = "Pihole is now enabled ✅"
+			case "disable":
+				ph.Disable()
+				msg.Text = "Pihole is now disabled  🛑"
+			default:
+				msg.Text = "Argument not recognized, use status/enable/disable"
+			}
+		} else {
+			msg.Text = "PiHole disabled in config file"
 		}
 	default:
 		msg.Text = "I don't know that command"
