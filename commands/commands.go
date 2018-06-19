@@ -25,6 +25,11 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		msg.Text = "Hi " + message.From.FirstName + " 👋"
 	case "temp":
 		msg.Text = fmt.Sprintf("Temperature is %s °C 🔥", utility.GetTemp())
+	case "shutdown":
+		cmd := exec.Command("shutdown", "-h", "now")
+		msg.Text = "Turning off the RPi"
+		bot.Send(msg)
+		cmd.Run()
 	case "reboot":
 		cmd := exec.Command("reboot")
 		msg.Text = "Rebooting RPi! 🔄"
