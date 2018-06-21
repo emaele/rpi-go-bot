@@ -19,8 +19,8 @@ func Speedtest() (download string, upload string) {
 	fastest := serverList.Fastest(2)
 	server := fastest[0]
 
-	download = fmt.Sprintf("  - %0.2fmbit/s\n", server.TestDownload())
-	upload = fmt.Sprintf("  - %0.2fmbit/s\n", server.TestUpload())
+	download = fmt.Sprintf("%0.2fmbit/s\n", server.TestDownload())
+	upload = fmt.Sprintf("%0.2fmbit/s\n", server.TestUpload())
 
 	return
 

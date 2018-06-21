@@ -70,7 +70,7 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 			msg.Text = "Error"
 		} */
 		down, up := speedtest.Speedtest()
-		msg.Text = "⬇️ " + down + "\n" + "⬆️ " + up
+		msg.Text = "⬇ Download️: " + down + "\n" + "⬆️ Upload: " + up
 	case "pihole":
 
 		if config.Pihole {
