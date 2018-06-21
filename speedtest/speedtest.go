@@ -16,7 +16,7 @@ func Speedtest() (ping int, download string, upload string) {
 		log.Panic(err)
 	}
 
-	fastest := serverList.Fastest(5)
+	fastest := serverList.Fastest(10)
 	server := fastest[0]
 
 	fmt.Printf("Server: %v", server)
