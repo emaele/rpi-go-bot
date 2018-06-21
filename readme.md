@@ -17,17 +17,11 @@ Be sure to run it as root.
 
 ### Config
 
-Before building it you need to install dependencies
-
-```
-pip install speedtest-cli
-```
-
-Now you need to create and edit the config file, you can also rename config_example.toml to config.toml to do that.
+All you need is to create and edit the config file, you can also rename config_example.toml to config.toml to do that.
 
 Telegram Bot Token can be obatined by creating a bot with ```@botfather```[^1] and your id by sending a message to ```@rawdatabot```[^2].
 
-After you done everything you're ready to build and execute the bot. Type:
+After you done everything, you're ready to build and execute the bot. Type:
 ```
 go build
 sudo ./rpi-go-bot
