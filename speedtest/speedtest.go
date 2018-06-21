@@ -8,7 +8,7 @@ import (
 )
 
 // Speedtest performs a speedtest from speedtest.net
-func Speedtest() (ping float64, download string, upload string) {
+func Speedtest() (ping int, download string, upload string) {
 
 	client := speedtest.NewClient()
 	serverList, err := client.GetServerList()
@@ -21,7 +21,7 @@ func Speedtest() (ping float64, download string, upload string) {
 
 	fmt.Printf("Server: %v", server)
 
-	ping = float64(server.TestLatency() / 1000000)
+	ping = int(server.TestLatency() / 1000000)
 	download = fmt.Sprintf("%0.2f mbit/s", server.TestDownload())
 	upload = fmt.Sprintf("%0.2f mbit/s", server.TestUpload())
 

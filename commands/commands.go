@@ -70,7 +70,7 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 			msg.Text = "Error"
 		} */
 		ping, down, up := speedtest.Speedtest()
-		msg.Text = fmt.Sprintf("🕰 Ping: %fms\n\n⬇ Download️: %s\n⬆️ Upload: %s", ping, down, up)
+		msg.Text = fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up)
 		//msg.Text = "🕰 Ping: "+ ping + "⬇ Download️: " + down + "\n" + "⬆️ Upload: " + up
 	case "pihole":
 
