@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	conf "gitlab.com/emaele/rpi-go-bot/config"
+	"gitlab.com/emaele/rpi-go-bot/speedtest"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/shuienko/go-pihole"
@@ -51,7 +52,7 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		wait := tgbotapi.NewMessage(config.MyID, "Performing a speedtest, please wait... ⏳")
 		bot.Send(wait)
 
-		cmd := exec.Command("speedtest-cli")
+		/*cmd := exec.Command("speedtest-cli")
 		if output, err := getOut(cmd); err == nil {
 			log := strings.Split(output, "\n")
 
@@ -67,7 +68,10 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 			msg.Text = "⬇️ " + down + "\n" + "⬆️ " + up
 		} else {
 			msg.Text = "Error"
-		}
+		} */
+		ping, down, up := speedtest.Speedtest()
+		msg.Text = fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up)
+		//msg.Text = "🕰 Ping: "+ ping + "⬇ Download️: " + down + "\n" + "⬆️ Upload: " + up
 	case "pihole":
 
 		if config.Pihole {

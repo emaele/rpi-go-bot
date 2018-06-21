@@ -8,10 +8,49 @@
   version = "v0.3.0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/erikstmartin/go-testdb"
+  packages = ["."]
+  revision = "8d10e4a1bae52cd8b81ffdec3445890d6dccab3d"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/freman/go-commontypes"
+  packages = ["."]
+  revision = "cba97ce53f2b7519e0ce3f62d9f0f0372019185a"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/freman/speedtest"
+  packages = ["."]
+  revision = "24280ed8ff85eca4c14069582cda5d209d263c5d"
+
+[[projects]]
   name = "github.com/go-telegram-bot-api/telegram-bot-api"
   packages = ["."]
   revision = "0e0af0c480ea98e982d5f4d45fb39577c6ab1e3e"
   version = "v4.6.2"
+
+[[projects]]
+  name = "github.com/kellydunn/golang-geo"
+  packages = ["."]
+  revision = "0862dac374594467ff6cc454c7cc974536e039b2"
+  version = "v0.7.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/kylelemons/go-gypsy"
+  packages = ["yaml"]
+  revision = "08cad365cd28a7fba23bb1e57aa43c5e18ad8bb8"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lib/pq"
+  packages = [
+    ".",
+    "oid"
+  ]
+  revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
 
 [[projects]]
   branch = "master"
@@ -25,9 +64,19 @@
   revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
   version = "v1.0.1"
 
+[[projects]]
+  name = "github.com/ziutek/mymysql"
+  packages = [
+    "godrv",
+    "mysql",
+    "native"
+  ]
+  revision = "e08c2f35356576b3c3690c252fe5dca728ae9292"
+  version = "v1.5.4"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "bc3d76dc5b0d69d60cf41292ff77e1f4ea82c0986ad4be5b427873aa6e9665a5"
+  inputs-digest = "233f1459a45070cb18e2420bd5826fd43ddedb2c769bb25fc71b5f0e42fcb1a0"
   solver-name = "gps-cdcl"
   solver-version = 1
