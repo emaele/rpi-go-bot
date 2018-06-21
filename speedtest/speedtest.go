@@ -3,12 +3,13 @@ package speedtest
 import (
 	"fmt"
 	"log"
+	"math"
 
 	"github.com/freman/speedtest"
 )
 
 // Speedtest performs a speedtest from speedtest.net
-func Speedtest() (ping float32, download string, upload string) {
+func Speedtest() (ping float64, download string, upload string) {
 
 	client := speedtest.NewClient()
 	serverList, err := client.GetServerList()
@@ -21,10 +22,19 @@ func Speedtest() (ping float32, download string, upload string) {
 
 	fmt.Printf("Server: %v", server)
 
-	ping = float32(server.TestLatency() / 1000000)
-	download = fmt.Sprintf("%0.2fmbit/s\n", server.TestDownload())
-	upload = fmt.Sprintf("%0.2fmbit/s\n", server.TestUpload())
+	ping = toFixed(float64(server.TestLatency()/1000000), 2)
+	download = fmt.Sprintf("%0.2f mbit/s", server.TestDownload())
+	upload = fmt.Sprintf("%0.2f mbit/s", server.TestUpload())
 
 	return
 
+}
+
+func round(num float64) int {
+	return int(num + math.Copysign(0.5, num))
+}
+
+func toFixed(num float64, precision int) float64 {
+	output := math.Pow(10, float64(precision))
+	return float64(round(num*output)) / output
 }
