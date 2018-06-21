@@ -41,7 +41,7 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		if output, err := getOut(cmd); err == nil {
 			msgSplit := strings.Split(output, "\n")
 			if value, err := strconv.Atoi(msgSplit[1]); err == nil {
-				msg.Text = "Available space " + fmt.Sprint(value/1000000) + "GB 💾"
+				msg.Text = fmt.Sprintf("Available space %d GB 💾", value/1000000)
 			} else {
 				msg.Text = "Error"
 			}
@@ -50,28 +50,17 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		}
 	case "speedtest":
 		wait := tgbotapi.NewMessage(config.MyID, "Performing a speedtest, please wait... ⏳")
-		bot.Send(wait)
+		if sent, err := bot.Send(wait); err == nil {
 
-		/*cmd := exec.Command("speedtest-cli")
-		if output, err := getOut(cmd); err == nil {
-			log := strings.Split(output, "\n")
+			action := tgbotapi.NewChatAction(message.Chat.ID, "typing")
+			bot.Send(action)
 
-			var down, up string
+			ping, down, up := speedtest.Speedtest()
 
-			for _, element := range log {
-				if strings.HasPrefix(element, "Download:") {
-					down = element
-				} else if strings.HasPrefix(element, "Upload:") {
-					up = element
-				}
-			}
-			msg.Text = "⬇️ " + down + "\n" + "⬆️ " + up
-		} else {
-			msg.Text = "Error"
-		} */
-		ping, down, up := speedtest.Speedtest()
-		msg.Text = fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up)
-		//msg.Text = "🕰 Ping: "+ ping + "⬇ Download️: " + down + "\n" + "⬆️ Upload: " + up
+			msg := tgbotapi.NewEditMessageText(message.Chat.ID, sent.MessageID, fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up))
+			bot.Send(msg)
+		}
+		return
 	case "pihole":
 
 		if config.Pihole {
