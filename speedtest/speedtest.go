@@ -19,7 +19,9 @@ func Speedtest() (ping float32, download string, upload string) {
 	fastest := serverList.Fastest(2)
 	server := fastest[0]
 
-	ping = float32(server.TestLatency())
+	fmt.Printf("Server: %v", server)
+
+	//ping = fmt.Sprintf("%v", server.TestLatency())
 	download = fmt.Sprintf("%0.2fmbit/s\n", server.TestDownload())
 	upload = fmt.Sprintf("%0.2fmbit/s\n", server.TestUpload())
 
