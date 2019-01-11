@@ -1,0 +1,13 @@
+[Unit]
+Description=Control your Raspberry Pi with a Telegram Bot 
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/user/go/bin/rpi-go-bot -config /path/to/config.toml
+ExecStop=/usr/bin/pkill rpi-go-bot
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target
