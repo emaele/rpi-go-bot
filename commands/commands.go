@@ -1,40 +1,40 @@
 package commands
 
 import (
-	"errors"
 	"fmt"
 	"os/exec"
-	"strconv"
 	"strings"
+	"syscall"
 )
 
-var (
-	err error
+const (
+	b  = 1
+	kb = 1024 * b
+	mb = 1024 * kb
+	gb = 1024 * mb
 )
 
 //AvailableSpace returns free space of the sdcard in GB
 func AvailableSpace() (string, error) {
-	cmd := exec.Command("df", "--output=avail", "/")
-	output, err := getOut(cmd)
+
+	fs := syscall.Statfs_t{}
+	err := syscall.Statfs("/", &fs)
 	if err != nil {
 		return "", err
 	}
 
-	msgSplit := strings.Split(output, "\n")
-	if value, err := strconv.Atoi(msgSplit[1]); err == nil {
-		return fmt.Sprintf("Available space %d GB 💾", value/1000000), nil
-	}
-
-	return "", err
+	free := fs.Bavail * uint64(fs.Bsize)
+	return fmt.Sprintf("Free space: %.2f GB 💾", float64(free)/float64(gb)), nil
 }
 
-func getOut(command *exec.Cmd) (output string, err error) {
-	stdoutStderr, err := command.CombinedOutput()
-	if err != nil {
-		err = errors.New("Error")
+// GetTemp gets the actual temperature of your rpi's CPU
+func GetTemp() (temp string) {
+
+	cmd := exec.Command("/opt/vc/bin/vcgencmd", "measure_temp")
+	if stdoutStderr, err := cmd.CombinedOutput(); err == nil {
+		log := string(stdoutStderr)
+		temp = strings.Trim(log, "temp='C\n")
 	}
 
-	output = string(stdoutStderr)
-
-	return output, err
+	return
 }
