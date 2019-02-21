@@ -11,9 +11,9 @@ Be sure to run it as root.
 - ```/reboot``` Reboot your Raspberry
 - ```/available_space``` Get the amount of free GBs on your sd
 - ```/speedtest``` Get the result of a speedtest
-- ```/pihole``` status/enable/disable
-	- ```status``` get current status of pihole
-	- ```enable/disable``` enable or disable pihole
+- ```/pihole``` Get current status of pihole
+    - ```/pihole enable/disable``` Enable or disable pihole
+- ```/myip``` Shows your current external ip address
 
 ### Config
 
