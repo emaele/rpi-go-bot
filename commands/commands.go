@@ -23,8 +23,8 @@ func AvailableSpace() (string, error) {
 		return "", err
 	}
 
-	free := fs.Bfree * uint64(fs.Bsize)
-	return fmt.Sprintf("Free space: %.2f GB💾", float64(free)/float64(gb)), nil
+	free := fs.Bavail * uint64(fs.Bsize)
+	return fmt.Sprintf("Free space: %.2f GB 💾", float64(free)/float64(gb)), nil
 }
 
 // GetTemp gets the actual temperature of your rpi's CPU
