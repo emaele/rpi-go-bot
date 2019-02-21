@@ -4,10 +4,11 @@ import (
 	"flag"
 	"log"
 
-	"github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 
-	"gitlab.com/emaele/rpi-go-bot/commands"
+	gohole "github.com/shuienko/go-pihole"
 	conf "gitlab.com/emaele/rpi-go-bot/config"
+	"gitlab.com/emaele/rpi-go-bot/private"
 	"gitlab.com/emaele/rpi-go-bot/utility"
 )
 
@@ -16,6 +17,8 @@ var (
 	err            error
 	debug          bool
 	configFilePath string
+
+	ph gohole.PiHConnector
 )
 
 func main() {
@@ -43,9 +46,18 @@ func main() {
 		log.Panic(err)
 	}
 
+	if config.Pihole {
+		ph = gohole.PiHConnector{
+			Host:  config.PiholeHost,
+			Token: config.PiholeAPIToken,
+		}
+	}
+
+	//Send a message at every boot up
 	boot := tgbotapi.NewMessage(config.MyID, "@"+bot.Self.UserName+" is now up! 👌")
 	bot.Send(boot)
 
+	//Start temperature monitor
 	go utility.TempAlert(config.TempLimit, config.MyID, bot)
 
 	for update := range updates {
@@ -57,8 +69,11 @@ func main() {
 
 func mainBot(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf.Config) {
 
+	action := tgbotapi.NewChatAction(message.Chat.ID, "typing")
+	bot.Send(action)
+
 	if message.Chat.ID == config.MyID {
-		commands.HandleCommands(bot, message, config)
+		private.HandleCommands(bot, message, config, ph)
 	} else {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "You are not authorized to use this bot ⚠️")
 		bot.Send(msg)
