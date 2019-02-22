@@ -23,6 +23,8 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 
 	msg := tgbotapi.NewMessage(config.MyID, "")
 
+	var err error
+
 	switch message.Command() {
 	case "start":
 		msg.Text = "Hi " + message.From.FirstName + " 👋"
@@ -57,9 +59,9 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		}
 		return
 	case "myip":
-		ip, _ := myip.GetMyIP()
-		bot.Send(tgbotapi.NewMessage(message.Chat.ID, ip))
-
+		var ip string
+		ip, err = myip.GetMyIP()
+		msg.Text = ip
 	case "pihole":
 		if config.Pihole {
 
@@ -67,10 +69,10 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 
 			switch holeArguments {
 			case "enable":
-				ph.Enable()
+				err = ph.Enable()
 				msg.Text = "Pihole is now enabled ✅"
 			case "disable":
-				ph.Disable()
+				err = ph.Disable()
 				msg.Text = "Pihole is now disabled  🛑"
 			default:
 				summary := ph.Summary()
@@ -84,6 +86,9 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		}
 	default:
 		msg.Text = "I don't know that command"
+	}
+	if err != nil {
+		msg.Text = err.Error()
 	}
 	bot.Send(msg)
 }
