@@ -2,81 +2,108 @@
 
 
 [[projects]]
+  digest = "1:e4b30804a381d7603b8a344009987c1ba351c26043501b23b8c7ce21f0b67474"
   name = "github.com/BurntSushi/toml"
   packages = ["."]
-  revision = "b26d9c308763d68093482582cea63d69be07a0f0"
-  version = "v0.3.0"
+  pruneopts = ""
+  revision = "3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005"
+  version = "v0.3.1"
 
 [[projects]]
   branch = "master"
+  digest = "1:358f9731027e87f8ae3a7e52f0473031be47d1e041295b3c0afc84dc779c0666"
   name = "github.com/erikstmartin/go-testdb"
   packages = ["."]
+  pruneopts = ""
   revision = "8d10e4a1bae52cd8b81ffdec3445890d6dccab3d"
 
 [[projects]]
   branch = "master"
+  digest = "1:84c974f97091f121c3a6ec070ec86d522979e931a3676559544b64a9a30c0e90"
   name = "github.com/freman/go-commontypes"
   packages = ["."]
-  revision = "cba97ce53f2b7519e0ce3f62d9f0f0372019185a"
+  pruneopts = ""
+  revision = "99c65abb31e25fefc26aaa66e06ae33466ec1519"
 
 [[projects]]
   branch = "master"
+  digest = "1:3ffc9736a85a6e07defc1fe1ce69dd5e72bb74b429d147a50ce3b09ff6429490"
   name = "github.com/freman/speedtest"
   packages = ["."]
-  revision = "24280ed8ff85eca4c14069582cda5d209d263c5d"
+  pruneopts = ""
+  revision = "dac53c122accad282296af1f5da788a460b2fd99"
 
 [[projects]]
+  digest = "1:b0f81d29fcc8df568a060df5ef86e6aed544003e2c65007541cca17a83605768"
   name = "github.com/go-telegram-bot-api/telegram-bot-api"
   packages = ["."]
-  revision = "0e0af0c480ea98e982d5f4d45fb39577c6ab1e3e"
-  version = "v4.6.2"
+  pruneopts = ""
+  revision = "9860bdfd3a171ceafb6e1eafa163482a6ef92643"
+  version = "v4.6.4"
 
 [[projects]]
+  digest = "1:a998c21702ed2bf6168914461eb21d75276a74f189be17d5448bcbe723c2f2ce"
   name = "github.com/kellydunn/golang-geo"
   packages = ["."]
+  pruneopts = ""
   revision = "0862dac374594467ff6cc454c7cc974536e039b2"
   version = "v0.7.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:72ac8b303addf8e2ba29c3fab8feb6630d05b272ae07f9f60b281ad9ee97b61f"
   name = "github.com/kylelemons/go-gypsy"
   packages = ["yaml"]
+  pruneopts = ""
   revision = "08cad365cd28a7fba23bb1e57aa43c5e18ad8bb8"
 
 [[projects]]
-  branch = "master"
+  digest = "1:29145d7af4adafd72a79df5e41456ac9e232d5a28c1cd4dacf3ff008a217fc10"
   name = "github.com/lib/pq"
   packages = [
     ".",
-    "oid"
+    "oid",
   ]
-  revision = "90697d60dd844d5ef6ff15135d0203f65d2f53b8"
+  pruneopts = ""
+  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:2973db38aa61332681e36c3bd9f83592a7d211632332c16fc4856dcd7cb077a8"
   name = "github.com/shuienko/go-pihole"
   packages = ["."]
+  pruneopts = ""
   revision = "5440b2b9394df754c9e903a62da9e1855317d95f"
 
 [[projects]]
+  digest = "1:3bfdafac43ceb125f775eb79b8ee8f1e976e227464434ffad40f956ac029e760"
   name = "github.com/technoweenie/multipartstreamer"
   packages = ["."]
+  pruneopts = ""
   revision = "a90a01d73ae432e2611d178c18367fbaa13e0154"
   version = "v1.0.1"
 
 [[projects]]
+  digest = "1:2a34b37d017e0e03a1683598ce909369e04a84bd082ccab9528dd68ed384b987"
   name = "github.com/ziutek/mymysql"
   packages = [
     "godrv",
     "mysql",
-    "native"
+    "native",
   ]
+  pruneopts = ""
   revision = "e08c2f35356576b3c3690c252fe5dca728ae9292"
   version = "v1.5.4"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "233f1459a45070cb18e2420bd5826fd43ddedb2c769bb25fc71b5f0e42fcb1a0"
+  input-imports = [
+    "github.com/BurntSushi/toml",
+    "github.com/freman/speedtest",
+    "github.com/go-telegram-bot-api/telegram-bot-api",
+    "github.com/shuienko/go-pihole",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1

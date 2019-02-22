@@ -39,6 +39,10 @@ func (u *URL) MarshalText() ([]byte, error) {
 	return []byte(u.URL.String()), nil
 }
 
-func (u *URL) MarshalJSON() ([]byte, error) {
+func (u URL) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u.URL.String())
+}
+
+func (u URL) MarshalTOML() (interface{}, error) {
+	return u.URL.String(), nil
 }
