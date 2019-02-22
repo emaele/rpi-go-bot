@@ -46,15 +46,15 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 			msg.Text = err.Error()
 		}
 	case "speedtest":
-		sent, er := bot.Send(tgbotapi.NewMessage(config.MyID, "Performing a speedtest, please wait... ⏳"))
-		if er != nil {
-			ping, down, up := speedtest.Speedtest()
+		sent, _ := bot.Send(tgbotapi.NewMessage(config.MyID, "Performing a speedtest, please wait... ⏳"))
 
-			deleteMsg := tgbotapi.NewDeleteMessage(message.Chat.ID, sent.MessageID)
-			bot.Send(deleteMsg)
+		ping, down, up := speedtest.Speedtest()
 
-			msg.Text = fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up)
-		}
+		deleteMsg := tgbotapi.NewDeleteMessage(message.Chat.ID, sent.MessageID)
+		bot.Send(deleteMsg)
+
+		msg.Text = fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up)
+
 	case "myip":
 		var ip string
 		ip, err = myip.GetMyIP()
