@@ -58,8 +58,10 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 		bot.Send(tgbotapi.NewMessage(message.Chat.ID, ip))
 
 	case "pihole":
-		holeArguments := message.CommandArguments()
 		if config.Pihole {
+
+			holeArguments := message.CommandArguments()
+
 			switch holeArguments {
 			case "enable":
 				ph.Enable()
