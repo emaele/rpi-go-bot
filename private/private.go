@@ -49,8 +49,11 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 
 			ping, down, up := speedtest.Speedtest()
 
-			editedMsg := tgbotapi.NewEditMessageText(message.Chat.ID, sent.MessageID, fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up))
-			bot.Send(editedMsg)
+			deleteMsg := tgbotapi.NewDeleteMessage(message.Chat.ID, sent.MessageID)
+			bot.Send(deleteMsg)
+
+			msg := tgbotapi.NewMessage(message.Chat.ID, fmt.Sprintf("🕰 Ping: %dms\n\n⬇ Download️: %s\n\n⬆️ Upload: %s", ping, down, up))
+			bot.Send(msg)
 		}
 		return
 	case "myip":
