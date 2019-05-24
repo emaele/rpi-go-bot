@@ -10,20 +10,17 @@ import (
 	conf "gitlab.com/emaele/rpi-go-bot/config"
 	"gitlab.com/emaele/rpi-go-bot/myip"
 	"gitlab.com/emaele/rpi-go-bot/speedtest"
+	"gitlab.com/emaele/rpi-go-bot/utility"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
-var (
-	err error
-)
+var err error
 
 // HandleCommands manages te
 func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf.Config, ph gohole.PiHConnector) {
 
 	msg := tgbotapi.NewMessage(config.MyID, "")
-
-	var err error
 
 	switch message.Command() {
 	case "start":
@@ -72,11 +69,7 @@ func HandleCommands(bot *tgbotapi.BotAPI, message *tgbotapi.Message, config conf
 				err = ph.Disable()
 				msg.Text = "Pihole is now disabled  🛑"
 			default:
-				summary := ph.Summary()
-				msg.Text = "Pihole is disabled 🛑"
-				if summary.Status == "enabled" {
-					msg.Text = "Pihole is enabled ✅"
-				}
+				msg.Text = utility.GetPiholeSummary(ph)
 			}
 		} else {
 			msg.Text = "PiHole disabled in config file"
