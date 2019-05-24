@@ -34,5 +34,5 @@ func GetPiholeSummary(ph gohole.PiHConnector) string {
 		status = "disabled 🛑"
 	}
 
-	return fmt.Sprintf("PiHole is currently %s\n\nPercentage blocked: %s%%\nDNS Queries: %s\nAds Blocked: %s", status, summary.AdsPercentage, summary.AdsBlocked, summary.DNSQueries)
+	return fmt.Sprintf("PiHole is currently %s\n\nPercentage blocked: %s%%\nDNS Queries: %s\nAds Blocked: %s", status, summary.AdsPercentage, summary.DNSQueries, summary.AdsBlocked)
 }
