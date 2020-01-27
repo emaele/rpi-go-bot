@@ -13,11 +13,15 @@ import (
 )
 
 var (
+	// Config vars
 	config         conf.Config
-	err            error
-	debug          bool
 	configFilePath string
 
+	// Cli params vars
+	err            error
+	debug          bool
+
+	// Pi-Hole connector struct
 	ph gohole.PiHConnector
 )
 
@@ -25,11 +29,13 @@ func main() {
 
 	setCLIParams()
 
+	// Read config from file
 	config, err = conf.ReadConfig(configFilePath)
 	if err != nil {
 		log.Panic(err)
 	}
 
+	// Let's authenticate the bot
 	bot, err := tgbotapi.NewBotAPI(config.TelegramTokenBot)
 	if err != nil {
 		log.Panic(err)
@@ -46,6 +52,7 @@ func main() {
 		log.Panic(err)
 	}
 
+	// If pihole is enabled, fill the connector with config values
 	if config.Pihole {
 		ph = gohole.PiHConnector{
 			Host:  config.PiholeHost,
@@ -60,6 +67,7 @@ func main() {
 	//Start temperature monitor
 	go utility.TempAlert(config.TempLimit, config.MyID, bot)
 
+	// Handle telegram updates
 	for update := range updates {
 		if update.Message != nil {
 			go mainBot(bot, update.Message, config)
